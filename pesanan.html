@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesanan Masuk - Hasna Fashion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:'Inter',sans-serif;background:#f7f4fb;color:#2e1a47;
+      min-height:100vh;
+    }
+    .admin-topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 32px;background:#fff;border-bottom:1px solid #ece4f7;
+      position:sticky;top:0;z-index:10;
+    }
+    .admin-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#3b1e6d;text-decoration:none}
+    .admin-logo span{color:#c084fc}
+    .admin-user{display:flex;align-items:center;gap:14px;font-size:.85rem;color:#8a7ba3}
+    .admin-user a{color:#e0455a;text-decoration:none;font-weight:600}
+    .admin-user a:hover{text-decoration:underline}
+    .admin-nav{display:flex;gap:8px;margin-left:24px}
+    .admin-nav a{
+      color:#5b4a75;text-decoration:none;font-size:.85rem;font-weight:600;
+      padding:8px 14px;border-radius:10px;
+    }
+    .admin-nav a:hover{background:#f3eafd}
+    .admin-nav a.active{background:#f3eafd;color:#8a4fd1}
+
+    .admin-wrap{max-width:1200px;margin:0 auto;padding:32px 24px 60px}
+    .admin-header{margin-bottom:24px}
+    .admin-header h1{font-family:'Playfair Display',serif;font-size:1.7rem;margin:0;color:#2e1a47}
+    .admin-header p{color:#8a7ba3;font-size:.88rem;margin:4px 0 0}
+
+    .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+    .stat-card{background:#fff;border-radius:16px;padding:18px 20px;box-shadow:0 6px 20px rgba(76,29,149,.05)}
+    .stat-card .num{font-family:'Playfair Display',serif;font-size:1.6rem;color:#2e1a47}
+    .stat-card .label{font-size:.78rem;color:#a898c2;margin-top:2px}
+
+    .order-card{background:#fff;border-radius:18px;box-shadow:0 8px 26px rgba(76,29,149,.06);margin-bottom:16px;overflow:hidden}
+    .order-head{
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+      padding:16px 20px;border-bottom:1px solid #f4effa;
+    }
+    .order-id{font-weight:700;color:#2e1a47;font-size:.95rem}
+    .order-date{font-size:.78rem;color:#a898c2;margin-top:2px}
+    .order-status{
+      font-size:.72rem;font-weight:700;padding:5px 12px;border-radius:20px;text-transform:capitalize;
+      border:none;cursor:pointer;font-family:'Inter',sans-serif;
+    }
+    .status-menunggu{background:#fff3cd;color:#8a6d00}
+    .status-diproses{background:#dbeafe;color:#1e5fa8}
+    .status-dikirim{background:#e0d4fb;color:#6b3fa0}
+    .status-selesai{background:#d4f7e0;color:#1c7a44}
+    .status-dibatalkan{background:#fde0e4;color:#c0293f}
+
+    .order-body{padding:16px 20px;display:grid;grid-template-columns:1.3fr 1fr;gap:20px}
+    .order-items p{margin:4px 0;font-size:.85rem;color:#4a3a63}
+    .order-total{font-weight:700;margin-top:8px;color:#2e1a47}
+    .order-info p{margin:3px 0;font-size:.82rem;color:#5b4a75}
+    .order-info strong{color:#2e1a47}
+    .order-actions{padding:12px 20px;border-top:1px solid #f4effa;display:flex;gap:8px;flex-wrap:wrap}
+
+    .btn-danger{
+      border:1.5px solid #f6cdd2;background:#fff;color:#e0455a;font-weight:600;font-size:.82rem;
+      border-radius:10px;cursor:pointer;padding:8px 14px;
+    }
+    .btn-danger:hover{background:#fdf0f1}
+
+    .empty-state{padding:60px 20px;text-align:center;color:#a898c2}
+    .empty-state p{margin:6px 0}
+
+    .login-gate{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      min-height:100vh;text-align:center;padding:20px;gap:12px;
+    }
+    .login-gate h2{font-family:'Playfair Display',serif;color:#2e1a47}
+    .login-gate p{color:#8a7ba3;font-size:.9rem;max-width:340px}
+    .btn-primary{
+      border:none;color:#fff;font-weight:700;font-size:.88rem;
+      border-radius:12px;cursor:pointer;padding:12px 22px;
+      background:linear-gradient(135deg,#a855f7,#ec4899);text-decoration:none;display:inline-block;
+    }
+
+    @media(max-width:640px){
+      .order-body{grid-template-columns:1fr}
+      .admin-nav{margin-left:0}
+      .admin-topbar{flex-wrap:wrap;gap:10px}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-gate" id="loginGate">
+    <h2>Halaman khusus admin</h2>
+    <p>Kamu perlu masuk terlebih dahulu untuk mengakses halaman pesanan ini.</p>
+    <a href="login.html" class="btn-primary">Masuk</a>
+  </div>
+
+  <div id="adminContent" style="display:none">
+    <div class="admin-topbar">
+      <a href="index.html" class="admin-logo">Hasna<span>.</span> Admin</a>
+      <div class="admin-nav">
+        <a href="admin.html">Kelola Produk</a>
+        <a href="pesanan.html" class="active">Pesanan Masuk</a>
+      </div>
+      <div class="admin-user">
+        <span id="adminEmail"></span>
+        <a href="#" id="logoutLink">Keluar</a>
+      </div>
+    </div>
+
+    <div class="admin-wrap">
+      <div class="admin-header">
+        <h1>Pesanan Masuk</h1>
+        <p>Pantau dan kelola status pesanan yang masuk dari toko.</p>
+      </div>
+
+      <div class="stats-row" id="statsRow"></div>
+
+      <div id="ordersContainer"></div>
+      <div class="empty-state hidden" id="emptyState">
+        <p style="font-size:2.4rem">📦</p>
+        <p>Belum ada pesanan masuk.</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+    import {
+      getFirestore, collection, doc, updateDoc, deleteDoc, onSnapshot, orderBy, query
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC8PrjY_i0-jqEHbDZvAf5MwxNZnpa4VE4",
+      authDomain: "hasna-fashion.firebaseapp.com",
+      projectId: "hasna-fashion",
+      storageBucket: "hasna-fashion.firebasestorage.app",
+      messagingSenderId: "1004644128564",
+      appId: "1:1004644128564:web:e7df2adc35c3d48908f761"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const ordersCol = collection(db, "orders");
+
+    const loginGate = document.getElementById('loginGate');
+    const adminContent = document.getElementById('adminContent');
+    const adminEmail = document.getElementById('adminEmail');
+    const logoutLink = document.getElementById('logoutLink');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginGate.style.display = "none";
+        adminContent.style.display = "block";
+        adminEmail.textContent = user.email;
+        listenToOrders();
+      } else {
+        loginGate.style.display = "flex";
+        adminContent.style.display = "none";
+      }
+    });
+
+    logoutLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      signOut(auth).then(() => { window.location.href = "index.html"; });
+    });
+
+    function formatRupiah(value) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value || 0);
+    }
+
+    function formatDate(timestamp) {
+      if (!timestamp || !timestamp.toDate) return '-';
+      return timestamp.toDate().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    const statusOptions = ['menunggu konfirmasi', 'diproses', 'dikirim', 'selesai', 'dibatalkan'];
+    const statusClass = {
+      'menunggu konfirmasi': 'status-menunggu',
+      'diproses': 'status-diproses',
+      'dikirim': 'status-dikirim',
+      'selesai': 'status-selesai',
+      'dibatalkan': 'status-dibatalkan',
+    };
+
+    const ordersContainer = document.getElementById('ordersContainer');
+    const emptyState = document.getElementById('emptyState');
+    const statsRow = document.getElementById('statsRow');
+
+    function renderStats(orders) {
+      const total = orders.length;
+      const menunggu = orders.filter(o => o.status === 'menunggu konfirmasi').length;
+      const selesai = orders.filter(o => o.status === 'selesai').length;
+      const omzet = orders.filter(o => o.status !== 'dibatalkan').reduce((sum, o) => sum + (o.total || 0), 0);
+
+      statsRow.innerHTML = `
+        <div class="stat-card"><div class="num">${total}</div><div class="label">Total Pesanan</div></div>
+        <div class="stat-card"><div class="num">${menunggu}</div><div class="label">Menunggu Konfirmasi</div></div>
+        <div class="stat-card"><div class="num">${selesai}</div><div class="label">Selesai</div></div>
+        <div class="stat-card"><div class="num">${formatRupiah(omzet)}</div><div class="label">Total Omzet</div></div>
+      `;
+    }
+
+    function listenToOrders() {
+      const q = query(ordersCol, orderBy("createdAt", "desc"));
+      onSnapshot(q, (snapshot) => {
+        if (snapshot.empty) {
+          ordersContainer.innerHTML = "";
+          statsRow.innerHTML = "";
+          emptyState.classList.remove('hidden');
+          return;
+        }
+        emptyState.classList.add('hidden');
+
+        const orders = snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
+        renderStats(orders);
+
+        ordersContainer.innerHTML = orders.map((order) => {
+          const status = order.status || 'menunggu konfirmasi';
+          const itemsHtml = (order.items || []).map((item) => `
+            <p>${item.name} x${item.quantity} — ${formatRupiah(item.price * item.quantity)}</p>
+          `).join('');
+
+          return `
+            <div class="order-card">
+              <div class="order-head">
+                <div>
+                  <div class="order-id">#${order.id.slice(-6).toUpperCase()}</div>
+                  <div class="order-date">${formatDate(order.createdAt)}</div>
+                </div>
+                <select class="order-status ${statusClass[status] || ''}" data-id="${order.id}" data-action="status">
+                  ${statusOptions.map(s => `<option value="${s}" ${s === status ? 'selected' : ''}>${s}</option>`).join('')}
+                </select>
+              </div>
+              <div class="order-body">
+                <div class="order-items">
+                  <p style="font-weight:600;color:#2e1a47;margin-bottom:6px">Item Pesanan</p>
+                  ${itemsHtml}
+                  <p class="order-total">Total: ${formatRupiah(order.total)}</p>
+                </div>
+                <div class="order-info">
+                  <p><strong>${order.customerName || '-'}</strong></p>
+                  <p>📱 ${order.customerPhone || '-'}</p>
+                  <p>📍 ${order.customerAddress || '-'}</p>
+                  <p>💳 ${order.paymentMethod || '-'}</p>
+                </div>
+              </div>
+              <div class="order-actions">
+                <a href="https://wa.me/${(order.customerPhone || '').replace(/[^0-9]/g, '').replace(/^0/, '62')}" target="_blank" class="btn-primary" style="padding:8px 14px;font-size:.82rem">Hubungi via WA</a>
+                <button class="btn-danger" data-action="delete" data-id="${order.id}">Hapus</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }, (error) => {
+        console.error(error);
+      });
+    }
+
+    ordersContainer.addEventListener('change', async (e) => {
+      const select = e.target.closest('select[data-action="status"]');
+      if (!select) return;
+      const id = select.dataset.id;
+      const newStatus = select.value;
+      try {
+        await updateDoc(doc(db, "orders", id), { status: newStatus });
+      } catch (err) {
+        alert('Gagal update status: ' + err.message);
+      }
+    });
+
+    ordersContainer.addEventListener('click', async (e) => {
+      const btn = e.target.closest('button[data-action="delete"]');
+      if (!btn) return;
+      if (!confirm('Yakin mau hapus pesanan ini?')) return;
+      try {
+        await deleteDoc(doc(db, "orders", btn.dataset.id));
+      } catch (err) {
+        alert('Gagal menghapus: ' + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

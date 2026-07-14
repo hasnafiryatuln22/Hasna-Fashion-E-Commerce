@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar - Hasna Fashion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    *{box-sizing:border-box}
+    body{
+      display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;
+      font-family:'Inter',sans-serif;
+      background:linear-gradient(135deg,#a78bfa 0%,#c084fc 35%,#f0abfc 70%,#fbcfe8 100%);
+      padding:24px;
+    }
+
+    .login-wrap{width:100%;max-width:420px;position:relative}
+
+    .login-illustration{position:relative;text-align:center;margin-bottom:-56px;z-index:2}
+    .login-illustration svg{width:220px;height:auto;filter:drop-shadow(0 12px 20px rgba(88,28,135,.25))}
+
+    .login-container{
+      position:relative;z-index:1;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(6px);
+      padding:76px 36px 36px;
+      border-radius:28px;
+      box-shadow:0 24px 60px rgba(76,29,149,.28);
+      width:100%;
+      text-align:center;
+    }
+    .login-logo{
+      font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;
+      color:#3b1e6d;text-decoration:none;display:inline-block;margin-bottom:6px;
+    }
+    .login-logo span{color:#c084fc}
+
+    .login-container h2{
+      font-family:'Playfair Display',serif;font-size:1.7rem;color:#2e1a47;margin:6px 0 4px;
+    }
+    .login-sub{color:#8a7ba3;font-size:.88rem;margin-bottom:26px}
+
+    .form-group{margin-bottom:16px;text-align:left;position:relative}
+    .form-group label{display:block;margin-bottom:6px;font-weight:500;color:#5b4a75;font-size:.85rem}
+    .input-icon{display:flex;align-items:center;background:#f6f2fb;border:1.5px solid #e7defa;border-radius:14px;padding:0 14px;transition:.25s}
+    .input-icon:focus-within{border-color:#c084fc;box-shadow:0 0 0 3px rgba(192,132,252,.18)}
+    .input-icon-glyph{font-size:1rem;margin-right:8px;opacity:.7}
+    .input-icon input{
+      flex:1;border:none;background:transparent;padding:13px 0;font-family:'Inter',sans-serif;font-size:.92rem;outline:none;color:#2e1a47;
+    }
+    .toggle-password{background:none;border:none;cursor:pointer;font-size:.95rem;opacity:.6;padding:6px}
+    .toggle-password:hover{opacity:1}
+
+    .btn-primary{
+      width:100%;padding:14px;border:none;color:#fff;font-weight:700;font-size:.95rem;
+      border-radius:14px;cursor:pointer;margin-top:4px;letter-spacing:.02em;
+      background:linear-gradient(135deg,#a855f7,#ec4899);
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(168,85,247,.35)}
+
+    .error-msg{color:#e0455a;font-size:.82rem;margin:2px 0 10px;display:none;text-align:left}
+    .success-msg{color:#1ea672;font-size:.82rem;margin:2px 0 10px;display:none;text-align:left}
+
+    .terms-row{display:flex;align-items:flex-start;gap:8px;margin:2px 2px 18px;text-align:left}
+    .terms-row input{margin-top:3px;accent-color:#a855f7}
+    .terms-row label{font-size:.8rem;color:#8a7ba3;line-height:1.5}
+    .terms-row a{color:#9061e0;font-weight:600;text-decoration:none}
+    .terms-row a:hover{text-decoration:underline}
+
+    .login-divider{display:flex;align-items:center;gap:12px;margin:26px 0 18px;color:#a898c2;font-size:.78rem}
+    .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:#e7defa}
+
+    .social-row{display:flex;justify-content:center;gap:14px;margin-bottom:22px}
+    .social-btn{
+      width:44px;height:44px;border-radius:50%;border:1.5px solid #e7defa;background:#fff;
+      font-weight:700;font-size:.95rem;color:#5b4a75;cursor:pointer;transition:.2s;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .social-btn:hover{border-color:#c084fc;transform:translateY(-2px)}
+
+    .signup-text{font-size:.85rem;color:#8a7ba3;margin-bottom:18px}
+    .signup-text a{color:#9061e0;font-weight:700;text-decoration:none}
+    .signup-text a:hover{text-decoration:underline}
+
+    .back-link{display:block;color:#a898c2;text-decoration:none;font-size:.82rem}
+    .back-link:hover{color:#5b4a75}
+
+    .mini-toast{
+      position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);
+      background:#2e1a47;color:#fff;padding:12px 22px;border-radius:50px;font-size:.85rem;
+      opacity:0;transition:.3s;pointer-events:none;z-index:50;white-space:nowrap;
+    }
+    .mini-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    @media(max-width:480px){
+      .login-container{padding:70px 24px 28px;border-radius:22px}
+      .login-illustration svg{width:180px}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-wrap">
+    <div class="login-illustration">
+      <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hairGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#5b3a8e"/>
+            <stop offset="100%" stop-color="#7c4fd1"/>
+          </linearGradient>
+          <linearGradient id="skinGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffd9b8"/>
+            <stop offset="100%" stop-color="#ffc79a"/>
+          </linearGradient>
+          <linearGradient id="clothGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c084fc"/>
+            <stop offset="100%" stop-color="#a855f7"/>
+          </linearGradient>
+        </defs>
+        <circle cx="192" cy="48" r="18" fill="#fff" opacity=".9"/>
+        <text x="192" y="55" text-anchor="middle" font-size="18">🔒</text>
+        <circle cx="26" cy="58" r="18" fill="#fff" opacity=".9"/>
+        <text x="26" y="65" text-anchor="middle" font-size="16">💬</text>
+        <circle cx="196" cy="122" r="15" fill="#4ade80"/>
+        <text x="196" y="128" text-anchor="middle" font-size="14" fill="#fff">✓</text>
+        <text x="40" y="24" font-size="16">✨</text>
+        <text x="176" y="18" font-size="14">✨</text>
+        <path d="M55 218 C55 168 85 150 110 150 C135 150 165 168 165 218 Z" fill="url(#clothGrad)"/>
+        <rect x="98" y="112" width="24" height="26" rx="10" fill="url(#skinGrad)"/>
+        <circle cx="110" cy="90" r="46" fill="url(#skinGrad)"/>
+        <path d="M64 90 C60 45 90 22 110 22 C130 22 160 45 156 90 C150 70 130 60 110 64 C90 60 70 70 64 90 Z" fill="url(#hairGrad)"/>
+        <circle cx="110" cy="26" r="16" fill="url(#hairGrad)"/>
+        <circle cx="110" cy="26" r="7" fill="#7c4fd1"/>
+        <circle cx="86" cy="98" r="7" fill="#ff9d8a" opacity=".5"/>
+        <circle cx="134" cy="98" r="7" fill="#ff9d8a" opacity=".5"/>
+        <circle cx="92" cy="88" r="4.5" fill="#3b1e6d"/>
+        <circle cx="128" cy="88" r="4.5" fill="#3b1e6d"/>
+        <path d="M96 104 Q110 114 124 104" stroke="#3b1e6d" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <rect x="128" y="140" width="30" height="50" rx="8" fill="#2e1a47"/>
+        <rect x="132" y="146" width="22" height="34" rx="2" fill="#f0abfc"/>
+        <ellipse cx="150" cy="176" rx="16" ry="12" fill="url(#skinGrad)"/>
+      </svg>
+    </div>
+
+    <div class="login-container">
+      <h2>Buat Akun Baru</h2>
+      <p class="login-sub">Daftar untuk mulai belanja bersama kami</p>
+
+      <form id="daftarForm">
+        <div class="form-group">
+          <div class="input-icon">
+            <span class="input-icon-glyph">🙋</span>
+            <input type="text" id="nama" placeholder="Nama lengkap kamu" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-icon">
+            <span class="input-icon-glyph">👤</span>
+            <input type="email" id="email" placeholder="Masukkan email kamu" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-icon">
+            <span class="input-icon-glyph">🔒</span>
+            <input type="password" id="password" placeholder="Buat password (min. 6 karakter)" required minlength="6">
+            <button type="button" class="toggle-password" id="togglePassword">👁️</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-icon">
+            <span class="input-icon-glyph">🔒</span>
+            <input type="password" id="confirmPassword" placeholder="Konfirmasi password" required minlength="6">
+            <button type="button" class="toggle-password" id="toggleConfirmPassword">👁️</button>
+          </div>
+        </div>
+
+        <div class="terms-row">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">Saya setuju dengan <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a></label>
+        </div>
+
+        <p class="error-msg" id="errorMsg"></p>
+        <p class="success-msg" id="successMsg">Akun berhasil dibuat! Mengalihkan ke halaman masuk...</p>
+        <button type="submit" class="btn-primary">Daftar</button>
+      </form>
+
+      <div class="login-divider"><span>atau daftar dengan</span></div>
+      <div class="social-row">
+        <button type="button" class="social-btn" data-provider="Google">G</button>
+        <button type="button" class="social-btn" data-provider="Apple"></button>
+        <button type="button" class="social-btn" data-provider="Facebook">f</button>
+      </div>
+
+      <p class="signup-text">Sudah punya akun? <a href="login.html">Masuk</a></p>
+      <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+    </div>
+  </div>
+
+  <div class="mini-toast" id="miniToast"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC8PrjY_i0-jqEHbDZvAf5MwxNZnpa4VE4",
+      authDomain: "hasna-fashion.firebaseapp.com",
+      projectId: "hasna-fashion",
+      storageBucket: "hasna-fashion.firebasestorage.app",
+      messagingSenderId: "1004644128564",
+      appId: "1:1004644128564:web:e7df2adc35c3d48908f761"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const daftarForm = document.getElementById('daftarForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+
+    daftarForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorMsg.style.display = "none";
+      successMsg.style.display = "none";
+
+      const nama = document.getElementById('nama').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        errorMsg.textContent = "Password dan konfirmasi password tidak sama.";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          return updateProfile(userCredential.user, { displayName: nama });
+        })
+        .then(() => {
+          successMsg.style.display = "block";
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 1500);
+        })
+        .catch((error) => {
+          if (error.code === "auth/email-already-in-use") {
+            errorMsg.textContent = "Email ini sudah terdaftar. Coba masuk saja.";
+          } else if (error.code === "auth/weak-password") {
+            errorMsg.textContent = "Password terlalu lemah, minimal 6 karakter.";
+          } else if (error.code === "auth/invalid-email") {
+            errorMsg.textContent = "Format email tidak valid.";
+          } else {
+            errorMsg.textContent = "Pendaftaran gagal. Coba lagi ya.";
+          }
+          errorMsg.style.display = "block";
+          console.error(error.message);
+        });
+    });
+  </script>
+
+  <script>
+    function setupToggle(btnId, inputId) {
+      const btn = document.getElementById(btnId);
+      const input = document.getElementById(inputId);
+      btn.addEventListener('click', function () {
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        btn.textContent = isHidden ? '🙈' : '👁️';
+      });
+    }
+    setupToggle('togglePassword', 'password');
+    setupToggle('toggleConfirmPassword', 'confirmPassword');
+
+    const miniToast = document.getElementById('miniToast');
+    function showMiniToast(message) {
+      miniToast.textContent = message;
+      miniToast.classList.add('show');
+      window.clearTimeout(miniToast._t);
+      miniToast._t = window.setTimeout(() => miniToast.classList.remove('show'), 2200);
+    }
+
+    document.querySelectorAll('.social-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        showMiniToast('Daftar dengan ' + btn.dataset.provider + ' belum aktif, coba email dulu ya!');
+      });
+    });
+  </script>
+</body>
+</html>

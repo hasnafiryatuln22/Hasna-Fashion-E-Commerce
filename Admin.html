@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Hasna Fashion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:'Inter',sans-serif;background:#f7f4fb;color:#2e1a47;
+      min-height:100vh;
+    }
+
+    /* ---- Topbar ---- */
+    .admin-topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 32px;background:#fff;border-bottom:1px solid #ece4f7;
+      position:sticky;top:0;z-index:10;
+    }
+    .admin-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#3b1e6d;text-decoration:none}
+    .admin-logo span{color:#c084fc}
+    .admin-user{display:flex;align-items:center;gap:14px;font-size:.85rem;color:#8a7ba3}
+    .admin-user a{color:#e0455a;text-decoration:none;font-weight:600}
+    .admin-user a:hover{text-decoration:underline}
+
+    /* ---- Layout ---- */
+    .admin-wrap{max-width:1100px;margin:0 auto;padding:32px 24px 60px}
+    .admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+    .admin-header h1{font-family:'Playfair Display',serif;font-size:1.7rem;margin:0;color:#2e1a47}
+    .admin-header p{color:#8a7ba3;font-size:.88rem;margin:4px 0 0}
+
+    .btn-primary{
+      border:none;color:#fff;font-weight:700;font-size:.88rem;
+      border-radius:12px;cursor:pointer;padding:12px 22px;letter-spacing:.02em;
+      background:linear-gradient(135deg,#a855f7,#ec4899);
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(168,85,247,.3)}
+
+    .btn-ghost{
+      border:1.5px solid #e7defa;background:#fff;color:#5b4a75;font-weight:600;font-size:.82rem;
+      border-radius:10px;cursor:pointer;padding:8px 14px;
+    }
+    .btn-ghost:hover{border-color:#c084fc}
+
+    .btn-danger{
+      border:1.5px solid #f6cdd2;background:#fff;color:#e0455a;font-weight:600;font-size:.82rem;
+      border-radius:10px;cursor:pointer;padding:8px 14px;
+    }
+    .btn-danger:hover{background:#fdf0f1}
+
+    /* ---- Table card ---- */
+    .table-card{background:#fff;border-radius:20px;box-shadow:0 10px 30px rgba(76,29,149,.06);overflow:hidden}
+    table{width:100%;border-collapse:collapse}
+    thead th{
+      text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;
+      color:#a898c2;padding:14px 18px;border-bottom:1px solid #f0eaf9;background:#faf7fd;
+    }
+    tbody td{padding:14px 18px;font-size:.88rem;border-bottom:1px solid #f4effa;vertical-align:middle}
+    tbody tr:last-child td{border-bottom:none}
+    .prod-name{font-weight:600;color:#2e1a47}
+    .prod-cat{display:inline-block;background:#f3eafd;color:#8a4fd1;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:20px;text-transform:capitalize}
+    .prod-actions{display:flex;gap:8px}
+    .empty-state{padding:60px 20px;text-align:center;color:#a898c2}
+    .empty-state p{margin:6px 0}
+
+    /* ---- Stock control ---- */
+    .stock-control{display:flex;align-items:center;gap:8px}
+    .stock-btn{
+      width:26px;height:26px;border-radius:8px;border:1.5px solid #e7defa;background:#fff;
+      color:#5b4a75;font-weight:700;font-size:.95rem;cursor:pointer;line-height:1;
+      display:flex;align-items:center;justify-content:center;transition:.15s;
+    }
+    .stock-btn:hover:not(:disabled){border-color:#c084fc;color:#8a4fd1}
+    .stock-btn:disabled{opacity:.35;cursor:not-allowed}
+    .stock-value{min-width:26px;text-align:center;font-weight:700;color:#2e1a47}
+    .stock-value.low{color:#e0455a}
+    .stock-badge-low{display:block;font-size:.68rem;color:#e0455a;font-weight:600;margin-top:2px}
+
+    /* ---- Modal form ---- */
+    .modal-bg{
+      position:fixed;inset:0;background:rgba(46,26,71,.35);display:none;
+      align-items:center;justify-content:center;z-index:100;padding:20px;
+    }
+    .modal-bg.open{display:flex}
+    .modal-box{
+      background:#fff;border-radius:22px;padding:32px;width:100%;max-width:480px;
+      max-height:88vh;overflow-y:auto;box-shadow:0 24px 60px rgba(76,29,149,.28);
+    }
+    .modal-box h2{font-family:'Playfair Display',serif;margin:0 0 18px;font-size:1.3rem;color:#2e1a47}
+    .form-group{margin-bottom:14px;text-align:left}
+    .form-group label{display:block;margin-bottom:5px;font-weight:500;color:#5b4a75;font-size:.82rem}
+    .form-group input, .form-group select, .form-group textarea{
+      width:100%;background:#f6f2fb;border:1.5px solid #e7defa;border-radius:12px;
+      padding:11px 14px;font-family:'Inter',sans-serif;font-size:.88rem;outline:none;color:#2e1a47;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus{border-color:#c084fc}
+    .form-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+    .field-error{color:#e0455a;font-size:.78rem;margin-top:4px;display:none}
+
+    .mini-toast{
+      position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);
+      background:#2e1a47;color:#fff;padding:12px 22px;border-radius:50px;font-size:.85rem;
+      opacity:0;transition:.3s;pointer-events:none;z-index:200;white-space:nowrap;
+    }
+    .mini-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    .login-gate{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      min-height:100vh;text-align:center;padding:20px;gap:12px;
+    }
+    .login-gate h2{font-family:'Playfair Display',serif;color:#2e1a47}
+    .login-gate p{color:#8a7ba3;font-size:.9rem;max-width:340px}
+
+    @media(max-width:640px){
+      .form-row2{grid-template-columns:1fr}
+      thead{display:none}
+      tbody td{display:block;border:none;padding:6px 18px}
+      tbody tr{display:block;border-bottom:1px solid #f0eaf9;padding:10px 0}
+      .prod-actions{padding-top:8px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ditampilkan kalau belum login -->
+  <div class="login-gate" id="loginGate">
+    <h2>Halaman khusus admin</h2>
+    <p>Kamu perlu masuk terlebih dahulu untuk mengakses halaman kelola produk ini.</p>
+    <a href="login.html" class="btn-primary" style="text-decoration:none;display:inline-block">Masuk</a>
+  </div>
+
+  <!-- Konten admin, disembunyikan sampai user terkonfirmasi login -->
+  <div id="adminContent" style="display:none">
+    <div class="admin-topbar">
+      <a href="index.html" class="admin-logo">Hasna<span>.</span> Admin</a>
+      <div class="admin-user">
+        <span id="adminEmail"></span>
+        <a href="#" id="logoutLink">Keluar</a>
+      </div>
+    </div>
+
+    <div class="admin-wrap">
+      <div class="admin-header">
+        <div>
+          <h1>Kelola Produk</h1>
+          <p>Tambah, ubah, atau hapus produk yang tampil di toko.</p>
+        </div>
+        <button class="btn-primary" id="openAddModal">+ Tambah Produk</button>
+      </div>
+
+      <div class="table-card">
+        <table id="productTable">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Kategori</th>
+              <th>Harga</th>
+              <th>Rating</th>
+              <th>Stok</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="productTableBody"></tbody>
+        </table>
+        <div class="empty-state hidden" id="emptyState">
+          <p style="font-size:2.4rem">🗂️</p>
+          <p>Belum ada produk. Klik "Tambah Produk" untuk mulai.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal tambah/edit produk -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal-box">
+      <h2 id="modalTitle">Tambah Produk</h2>
+      <form id="productForm">
+        <input type="hidden" id="productDocId">
+        <div class="form-group">
+          <label for="pName">Nama produk</label>
+          <input type="text" id="pName" required>
+          <span class="field-error" id="errName">Nama wajib diisi.</span>
+        </div>
+        <div class="form-row2">
+          <div class="form-group">
+            <label for="pCategory">Kategori</label>
+            <select id="pCategory">
+              <option value="perempuan">Perempuan</option>
+              <option value="laki-laki">Laki-Laki</option>
+              <option value="anak perempuan">Anak Perempuan</option>
+              <option value="anak laki-laki">Anak Laki-Laki</option>
+              <option value="kerudung">Kerudung</option>
+              <option value="kaos kaki">Kaos Kaki</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="pTag">Label</label>
+            <select id="pTag">
+              <option value="">Tanpa label</option>
+              <option value="Baru">Baru</option>
+              <option value="Sale">Sale</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row2">
+          <div class="form-group">
+            <label for="pPrice">Harga (Rp)</label>
+            <input type="number" id="pPrice" min="0" required>
+            <span class="field-error" id="errPrice">Harga wajib diisi dan tidak boleh negatif.</span>
+          </div>
+          <div class="form-group">
+            <label for="pOriginalPrice">Harga asli (Rp)</label>
+            <input type="number" id="pOriginalPrice" min="0" placeholder="Kosongkan jika sama">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="pStock">Stok</label>
+          <input type="number" id="pStock" min="0" step="1" value="0" required>
+          <span class="field-error" id="errStock">Stok wajib diisi dan tidak boleh negatif.</span>
+        </div>
+        <div class="form-group">
+          <label for="pImage">URL gambar</label>
+          <input type="text" id="pImage" placeholder="images/nama-file.jpg">
+        </div>
+        <div class="form-group">
+          <label for="pSizes">Ukuran tersedia (pisahkan koma)</label>
+          <input type="text" id="pSizes" placeholder="S, M, L">
+        </div>
+        <div class="form-group">
+          <label for="pDescription">Deskripsi</label>
+          <textarea id="pDescription" rows="3"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-ghost" id="cancelModal">Batal</button>
+          <button type="submit" class="btn-primary" id="saveProductBtn">Simpan Produk</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="mini-toast" id="miniToast"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+    import {
+      getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, orderBy, query, increment
+    } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC8PrjY_i0-jqEHbDZvAf5MwxNZnpa4VE4",
+      authDomain: "hasna-fashion.firebaseapp.com",
+      projectId: "hasna-fashion",
+      storageBucket: "hasna-fashion.firebasestorage.app",
+      messagingSenderId: "1004644128564",
+      appId: "1:1004644128564:web:e7df2adc35c3d48908f761"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const productsCol = collection(db, "products");
+
+    const loginGate = document.getElementById('loginGate');
+    const adminContent = document.getElementById('adminContent');
+    const adminEmail = document.getElementById('adminEmail');
+    const logoutLink = document.getElementById('logoutLink');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginGate.style.display = "none";
+        adminContent.style.display = "block";
+        adminEmail.textContent = user.email;
+        listenToProducts();
+      } else {
+        loginGate.style.display = "flex";
+        adminContent.style.display = "none";
+      }
+    });
+
+    logoutLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      signOut(auth).then(() => { window.location.href = "index.html"; });
+    });
+
+    function formatRupiah(value) {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
+    }
+
+    const tableBody = document.getElementById('productTableBody');
+    const emptyState = document.getElementById('emptyState');
+
+    // Cache data produk (termasuk stok) supaya tombol Edit & +/- stok akurat tanpa fetch ulang
+    window.__hasnaProductsCache = {};
+
+    function listenToProducts() {
+      const q = query(productsCol, orderBy("name"));
+      onSnapshot(q, (snapshot) => {
+        window.__hasnaProductsCache = {};
+        if (snapshot.empty) {
+          tableBody.innerHTML = "";
+          emptyState.classList.remove('hidden');
+          return;
+        }
+        emptyState.classList.add('hidden');
+        tableBody.innerHTML = snapshot.docs.map((docSnap) => {
+          const p = docSnap.data();
+          window.__hasnaProductsCache[docSnap.id] = p;
+          const stock = Number.isFinite(p.stock) ? p.stock : 0;
+          const isLow = stock <= 3;
+          return `
+            <tr>
+              <td class="prod-name">${p.name || ''}</td>
+              <td><span class="prod-cat">${p.category || ''}</span></td>
+              <td>${formatRupiah(p.price || 0)}</td>
+              <td>${p.rating ? p.rating.toFixed(1) : '-'}</td>
+              <td>
+                <div class="stock-control">
+                  <button class="stock-btn" data-action="stock-minus" data-id="${docSnap.id}" ${stock <= 0 ? 'disabled' : ''}>−</button>
+                  <span class="stock-value ${isLow ? 'low' : ''}" data-stock-display="${docSnap.id}">${stock}</span>
+                  <button class="stock-btn" data-action="stock-plus" data-id="${docSnap.id}">+</button>
+                </div>
+                ${stock <= 0 ? '<span class="stock-badge-low">Stok habis</span>' : (isLow ? '<span class="stock-badge-low">Stok menipis</span>' : '')}
+              </td>
+              <td class="prod-actions">
+                <button class="btn-ghost" data-action="edit" data-id="${docSnap.id}">Edit</button>
+                <button class="btn-danger" data-action="delete" data-id="${docSnap.id}">Hapus</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }, (error) => {
+        showMiniToast('Gagal memuat produk: ' + error.message);
+      });
+    }
+
+    // ---- Modal open/close ----
+    const modalBg = document.getElementById('modalBg');
+    const modalTitle = document.getElementById('modalTitle');
+    const productForm = document.getElementById('productForm');
+    const productDocId = document.getElementById('productDocId');
+
+    function openModal(mode, data = {}, docId = '') {
+      productForm.reset();
+      document.querySelectorAll('.field-error').forEach(el => el.style.display = 'none');
+      productDocId.value = docId;
+      modalTitle.textContent = mode === 'edit' ? 'Ubah Produk' : 'Tambah Produk';
+      document.getElementById('pName').value = data.name || '';
+      document.getElementById('pCategory').value = data.category || 'perempuan';
+      document.getElementById('pTag').value = data.tag || '';
+      document.getElementById('pPrice').value = data.price || '';
+      document.getElementById('pOriginalPrice').value = data.originalPrice || '';
+      document.getElementById('pStock').value = Number.isFinite(data.stock) ? data.stock : 0;
+      document.getElementById('pImage').value = data.image || '';
+      document.getElementById('pSizes').value = (data.sizes || []).join(', ');
+      document.getElementById('pDescription').value = data.description || '';
+      modalBg.classList.add('open');
+    }
+
+    function closeModal() {
+      modalBg.classList.remove('open');
+    }
+
+    document.getElementById('openAddModal').addEventListener('click', () => openModal('add'));
+    document.getElementById('cancelModal').addEventListener('click', closeModal);
+    modalBg.addEventListener('click', (e) => { if (e.target === modalBg) closeModal(); });
+
+    tableBody.addEventListener('click', async (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+
+      if (action === 'delete') {
+        if (!confirm('Yakin mau hapus produk ini?')) return;
+        try {
+          await deleteDoc(doc(db, "products", id));
+          showMiniToast('Produk berhasil dihapus.');
+        } catch (error) {
+          showMiniToast('Gagal menghapus: ' + error.message);
+        }
+        return;
+      }
+
+      if (action === 'edit') {
+        const cached = window.__hasnaProductsCache ? window.__hasnaProductsCache[id] : null;
+        if (cached) {
+          openModal('edit', cached, id);
+        }
+        return;
+      }
+
+      if (action === 'stock-plus') {
+        btn.disabled = true;
+        try {
+          await updateDoc(doc(db, "products", id), { stock: increment(1) });
+        } catch (error) {
+          showMiniToast('Gagal menambah stok: ' + error.message);
+        } finally {
+          btn.disabled = false;
+        }
+        return;
+      }
+
+      if (action === 'stock-minus') {
+        const cached = window.__hasnaProductsCache ? window.__hasnaProductsCache[id] : null;
+        const currentStock = cached && Number.isFinite(cached.stock) ? cached.stock : 0;
+        if (currentStock <= 0) {
+          showMiniToast('Stok sudah 0.');
+          return;
+        }
+        btn.disabled = true;
+        try {
+          await updateDoc(doc(db, "products", id), { stock: increment(-1) });
+        } catch (error) {
+          showMiniToast('Gagal mengurangi stok: ' + error.message);
+        } finally {
+          btn.disabled = false;
+        }
+        return;
+      }
+    });
+
+    // ---- Simpan produk (tambah / edit) ----
+    productForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('pName').value.trim();
+      const price = Number(document.getElementById('pPrice').value);
+      const stockInput = document.getElementById('pStock').value;
+      const stock = stockInput === '' ? NaN : Number(stockInput);
+      let isValid = true;
+
+      document.getElementById('errName').style.display = 'none';
+      document.getElementById('errPrice').style.display = 'none';
+      document.getElementById('errStock').style.display = 'none';
+
+      if (!name) {
+        document.getElementById('errName').style.display = 'block';
+        isValid = false;
+      }
+      if (!price || price < 0) {
+        document.getElementById('errPrice').style.display = 'block';
+        isValid = false;
+      }
+      if (!Number.isFinite(stock) || stock < 0) {
+        document.getElementById('errStock').style.display = 'block';
+        isValid = false;
+      }
+      if (!isValid) return;
+
+      const originalPriceInput = document.getElementById('pOriginalPrice').value;
+      const sizesInput = document.getElementById('pSizes').value;
+
+      const payload = {
+        name,
+        category: document.getElementById('pCategory').value,
+        tag: document.getElementById('pTag').value,
+        price,
+        originalPrice: originalPriceInput ? Number(originalPriceInput) : price,
+        stock: Math.floor(stock),
+        image: document.getElementById('pImage').value.trim(),
+        sizes: sizesInput ? sizesInput.split(',').map(s => s.trim()).filter(Boolean) : [],
+        description: document.getElementById('pDescription').value.trim(),
+        rating: 4.5,
+      };
+
+      const saveBtn = document.getElementById('saveProductBtn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan...";
+
+      try {
+        const docId = productDocId.value;
+        if (docId) {
+          // Jangan timpa rating saat edit kalau produk sudah punya rating asli
+          const cached = window.__hasnaProductsCache ? window.__hasnaProductsCache[docId] : null;
+          if (cached && Number.isFinite(cached.rating)) {
+            payload.rating = cached.rating;
+          }
+          await updateDoc(doc(db, "products", docId), payload);
+          showMiniToast('Produk berhasil diperbarui.');
+        } else {
+          await addDoc(productsCol, payload);
+          showMiniToast('Produk berhasil ditambahkan.');
+        }
+        closeModal();
+      } catch (error) {
+        showMiniToast('Gagal menyimpan: ' + error.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan Produk";
+      }
+    });
+
+    const miniToast = document.getElementById('miniToast');
+    function showMiniToast(message) {
+      miniToast.textContent = message;
+      miniToast.classList.add('show');
+      window.clearTimeout(miniToast._t);
+      miniToast._t = window.setTimeout(() => miniToast.classList.remove('show'), 2600);
+    }
+  </script>
+</body>
+</html>

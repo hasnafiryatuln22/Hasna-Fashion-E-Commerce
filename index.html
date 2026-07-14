@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hasna Fashion — Elegance Redefined</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HASNA2026"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-HASNA2026');</script>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <a href="#" class="nav-logo">Hasna<span>.</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#catalog">Katalog</a></li>
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#contact">Kontak</a></li>
+      <!-- Menu Admin disembunyikan secara default, Menu Auth jadi 'Masuk' -->
+      <li id="adminLink" style="display:none;"><a href="admin.html">Admin</a></li>
+<li id="pesananLink" style="display:none;"><a href="pesanan.html">Pesanan</a></li>
+<li><a href="#" id="authBtn">Masuk</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="cart-btn" id="cartBtn" aria-label="Keranjang">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&q=80" alt="Hero" />
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Koleksi Terbaru 2026</p>
+      <h1 class="hero-title">
+        <span class="line">Tampil</span>
+        <span class="line italic">Elegan,</span>
+        <span class="line">Tampil Kamu.</span>
+      </h1>
+      <p class="hero-sub">Temukan koleksi busana modern yang memadukan estetika dan kenyamanan untuk setiap momen.</p>
+      <div class="hero-ctas">
+        <a href="#catalog" class="btn-primary">Belanja Sekarang</a>
+        <a href="#about" class="btn-ghost">Tentang Kami</a>
+      </div>
+    </div>
+    <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+  </section>
+
+  <div class="announcement-bar">
+    <p>🎉 Gratis Ongkir pembelian di atas Rp500.000 &nbsp;|&nbsp; 💳 Cicilan 0% tersedia &nbsp;|&nbsp; 🔒 Pembayaran aman & terpercaya</p>
+  </div>
+
+  <section class="catalog-section" id="catalog">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Koleksi Kami</p>
+        <h2 class="section-title">Pilihan Fashion Terbaik</h2>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-filter="all">Semua</button>
+          <button class="filter-tab" data-filter="perempuan">Perempuan</button>
+          <button class="filter-tab" data-filter="laki-laki">Laki-Laki</button>
+          <button class="filter-tab" data-filter="anak perempuan">Anak Perempuan</button>
+          <button class="filter-tab" data-filter="anak laki-laki">Anak Laki-Laki</button>
+          <button class="filter-tab" data-filter="kerudung">Kerudung</button>
+          <button class="filter-tab" data-filter="kaos kaki">Kaos Kaki</button>
+        </div>
+        <div class="filter-controls">
+          <input type="text" class="search-input" id="searchInput" placeholder="Cari produk..." />
+          <select class="sort-select" id="sortSelect">
+            <option value="default">Urutkan</option>
+            <option value="price-asc">Harga: Terendah</option>
+            <option value="price-desc">Harga: Tertinggi</option>
+            <option value="name-asc">Nama: A-Z</option>
+          </select>
+          <div class="price-range">
+            <label>Maks: <span id="priceLabel">Rp500.000</span></label>
+            <input type="range" id="priceRange" min="50000" max="500000" step="10000" value="500000" />
+          </div>
+        </div>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+      <p class="no-results hidden" id="noResults">Tidak ada produk yang ditemukan.</p>
+    </div>
+  </section>
+
+  <section class="about-section" id="about">
+    <div class="container about-grid">
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Hasna Story" />
+        <div class="about-badge">Est. 2020</div>
+      </div>
+      <div class="about-text">
+        <p class="section-eyebrow">Cerita Kami</p>
+        <h2>Fashion yang Lahir dari Passion</h2>
+        <p>Hasna Fashion didirikan dengan satu visi: menghadirkan busana berkualitas yang merayakan keunikan setiap perempuan Indonesia. Setiap koleksi dirancang dengan bahan pilihan dan detail yang teliti.</p>
+        <p>Kami percaya bahwa fashion bukan sekadar pakaian — ini adalah ekspresi diri, kepercayaan diri, dan identitas kamu.</p>
+        <div class="about-stats">
+          <div class="stat"><span class="stat-num">2.000+</span><span class="stat-label">Pelanggan Puas</span></div>
+          <div class="stat"><span class="stat-num">150+</span><span class="stat-label">Produk Koleksi</span></div>
+          <div class="stat"><span class="stat-num">4.9★</span><span class="stat-label">Rating Rata-rata</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Hubungi Kami</p>
+        <h2 class="section-title">Ada Pertanyaan?</h2>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cName">Nama Lengkap</label>
+            <input type="text" id="cName" placeholder="Nama kamu" />
+            <span class="form-error" id="errName"></span>
+          </div>
+          <div class="form-group">
+            <label for="cEmail">Email</label>
+            <input type="email" id="cEmail" placeholder="email@kamu.com" />
+            <span class="form-error" id="errEmail"></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cMsg">Pesan</label>
+          <textarea id="cMsg" rows="4" placeholder="Tulis pesan kamu..."></textarea>
+          <span class="form-error" id="errMsg"></span>
+        </div>
+        <button type="submit" class="btn-primary">Kirim Pesan</button>
+        <p class="form-success hidden" id="formSuccess">Pesan berhasil dikirim! Kami akan segera membalas.</p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">Hasna<span>.</span></a>
+        <p>Busana modern untuk perempuan Indonesia yang percaya diri dan berkarakter.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Instagram">📸</a>
+          <a href="#" aria-label="TikTok">🎵</a>
+          <a href="#" aria-label="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>Tautan Cepat</h4>
+        <ul>
+          <li><a href="#home">Beranda</a></li>
+          <li><a href="#catalog">Katalog</a></li>
+          <li><a href="#about">Tentang Kami</a></li>
+          <li><a href="#contact">Kontak</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Layanan</h4>
+        <ul>
+          <li><a href="#">Panduan Ukuran</a></li>
+          <li><a href="#">Kebijakan Return</a></li>
+          <li><a href="#">Cara Pembayaran</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Kontak</h4>
+        <p>📧 hello@hasnafashion.id</p>
+        <p>📱 +62 895365699800</p>
+        <p>📍 Bandung, Jawa Barat</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>2026 Hasna Fashion. All rights reserved. | KAIT II Administrasi Bisnis</p>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Keranjang Belanja</h3>
+      <button class="cart-close" id="cartClose">x</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <p style="font-size:3rem">🛍️</p>
+        <p>Keranjangmu masih kosong.</p>
+        <a href="#catalog" class="btn-primary" id="shopNowBtn">Mulai Belanja</a>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-summary">
+        <div class="summary-row"><span>Subtotal</span><span id="subtotalAmt">Rp0</span></div>
+        <div class="summary-row"><span>Ongkir</span><span id="ongkirAmt">Rp0</span></div>
+        <div class="summary-row total"><span>Total</span><span id="totalAmt">Rp0</span></div>
+      </div>
+      <button class="btn-primary full-width" id="checkoutBtn">Lanjut ke Pembayaran</button>
+    </div>
+  </aside>
+
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="product-modal" id="productModal">
+    <button class="modal-close" id="modalClose">x</button>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <div class="checkout-modal" id="checkoutModal">
+    <div class="checkout-inner">
+      <button class="modal-close" id="checkoutClose">x</button>
+      <h2>Checkout</h2>
+      <div id="checkoutBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  
+  <!-- Ini yang paling penting, panggil file JS kamu sebagai module -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
